@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>AR con detección de superficies</title>
+  <meta charset="UTF-8">
+  <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@ar-js-org/ar.js@3.3.2/aframe/build/aframe-ar-nft.js"></script>
+</head>
+<body style="margin: 0; overflow: hidden;">
+  <a-scene
+    embedded
+    vr-mode-ui="enabled: false"
+    arjs="sourceType: webcam; debugUIEnabled: false; trackingMethod: best;">
+
+    <!-- Entidad para colocar el modelo 3D en la superficie detectada -->
+    <a-entity id="ar-content" position="0 0 0" scale="0.5 0.5 0.5">
+      <a-box color="orange"></a-box>
+    </a-entity>
+
+    <!-- Detección de plano y colocación en AR.js -->
+    <a-entity
+      camera
+      look-controls
+      raycaster="objects: .surface-marker;"
+      position="0 1.6 0">
+    </a-entity>
+
+    <!-- Función para colocar el objeto en el punto detectado -->
+    <a-entity class="surface-marker" geometry="primitive: plane; width: 0.5; height: 0.5" visible="false"></a-entity>
+
+  </a-scene>
+
+  <script>
+    document.addEventListener('click', function (event) {
+      // Al hacer clic, coloca el contenido en la posición del plano detectado
+      const arContent = document.getElementById('ar-content');
+      const surfaceMarker = document.querySelector('.surface-marker');
+      arContent.setAttribute('position', surfaceMarker.getAttribute('position'));
+    });
+  </script>
+</body>
+</html>
